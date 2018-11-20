@@ -1,0 +1,13 @@
+[[hosts]]
+name = "web-int"
+address = "web-server-int.example.com"
+user = "hoge"
+key = "hoge.key"
+act = "web"
+
+[[hosts]]
+name = "db-int"
+address = "db-server-int.example.com"
+user = "hoge"
+key = "hoge.key"
+act = "db"
