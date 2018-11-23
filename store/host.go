@@ -59,6 +59,6 @@ func (h *Hosts) GetHost(fileName, hostName string) (host *domain.Host, err error
 
 func getName(filePath string) string {
 	_, fileName := filepath.Split(filePath)
-	name := strings.Split(fileName, ".")
-	return name[0]
+	name := strings.TrimSuffix(fileName, ".toml")
+	return name
 }
