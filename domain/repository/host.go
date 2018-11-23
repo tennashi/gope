@@ -6,5 +6,7 @@ import (
 
 // Hosts is repository
 type Hosts interface {
-	Get(fileName string) (*domain.Hosts, error)
+	GetHostFiles(dirPath string) ([]*domain.HostFile, error)
+	GetHosts(fileName string) (*domain.Hosts, error)
+	GetHost(fileName, hostName string) (*domain.Host, error)
 }

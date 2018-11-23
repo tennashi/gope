@@ -17,9 +17,8 @@ func NewHost(hr repository.Hosts) *Host {
 	return &Host{hr}
 }
 
-// List show hosts file
-func (h *Host) List(hostsFile string) (hosts *domain.Hosts, err error) {
-	hosts, err = h.hr.Get(hostsFile)
+func (h *Host) GetHostFiles(dirPath string) (hostFiles []*domain.HostFile, err error) {
+	hostFiles, err = h.hr.GetHostFiles(dirPath)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -27,7 +26,20 @@ func (h *Host) List(hostsFile string) (hosts *domain.Hosts, err error) {
 	return
 }
 
-// HostsList show hosts file list
-func (h *Host) HostsList(hostsDir string) (hostsNames []string, err error) {
+func (h *Host) GetHosts(hostsFile string) (hosts *domain.Hosts, err error) {
+	hosts, err = h.hr.GetHosts(hostsFile)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return
+}
+
+func (h *Host) GetHost(hostsFile, hostsName string) (host *domain.Host, err error) {
+	host, err = h.hr.GetHost(hostsFile, hostsName)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
 	return
 }

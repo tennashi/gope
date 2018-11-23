@@ -13,3 +13,9 @@ type Host struct {
 type Hosts struct {
 	Hosts []Host
 }
+
+// HostFile represents host file
+type HostFile struct {
+	Name string
+	Path string
+}

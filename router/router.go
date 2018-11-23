@@ -21,8 +21,9 @@ func Init(config *config.Config) *echo.Echo {
 	v1 := e.Group("/api/v1")
 	{
 		hh := handler.NewHost()
+		v1.GET("/hosts", handler.C(hh.GetHostFiles))
 		v1.GET("/hosts/:name", handler.C(hh.GetHosts))
-		//v1.GET("/procedure", handler.C(handler.GetProcedures))
+		v1.GET("/hosts/:name/:host", handler.C(hh.GetHost))
 	}
 
 	return e
