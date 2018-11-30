@@ -5,12 +5,12 @@ import (
 	"github.com/tennashi/gope/context"
 )
 
-// Func represent handler function with middleware.Context
-type Func func(c *context.Context) error
+// Func represent a handler function that takes context.Project as an argument.
+type Func func(c *context.Project) error
 
-// C convert Func into echo.HandlerFunc
-func C(h Func) echo.HandlerFunc {
+// PC convert Func to echo.HandlerFunc.
+func PC(h Func) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		return h(c.(*context.Context))
+		return h(c.(*context.Project))
 	}
 }

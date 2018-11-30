@@ -2,28 +2,33 @@ package router
 
 import (
 	"github.com/labstack/echo"
-	"github.com/tennashi/gope/config"
-	"github.com/tennashi/gope/context"
 	"github.com/tennashi/gope/handler"
+	"github.com/tennashi/gope/store"
 )
 
 // Init initialize echo.Echo
-func Init(config *config.Config) *echo.Echo {
+func Init(projStore *store.Project) *echo.Echo {
 	e := echo.New()
-
-	e.Use(func(h echo.HandlerFunc) echo.HandlerFunc {
-		return func(ec echo.Context) error {
-			ctx := context.NewContext(ec, config)
-			return h(ctx)
-		}
-	})
 
 	v1 := e.Group("/api/v1")
 	{
-		hh := handler.NewHost()
-		v1.GET("/hosts", handler.C(hh.GetHostFiles))
-		v1.GET("/hosts/:name", handler.C(hh.GetHosts))
-		v1.GET("/hosts/:name/:host", handler.C(hh.GetHost))
+		pjh := handler.NewProject(projStore)
+		p := v1.Group("/:project_name", pjh.UseProjectContext)
+		{
+			p.GET("", handler.PC(pjh.GetProject))
+			hh := handler.NewHost()
+			{
+				p.GET("/hosts", handler.PC(hh.GetHostFiles))
+				p.GET("/hosts/:name", handler.PC(hh.GetHosts))
+				p.GET("/hosts/:name/:host", handler.PC(hh.GetHost))
+			}
+			ph := handler.NewProcedure()
+			{
+				p.GET("/procedures", handler.PC(ph.GetProcedureFiles))
+				p.GET("/procedures/:name", handler.PC(ph.GetProcedure))
+			}
+
+		}
 	}
 
 	return e

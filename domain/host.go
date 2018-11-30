@@ -11,11 +11,13 @@ type Host struct {
 
 // Hosts represents hosts
 type Hosts struct {
+	Name  string
 	Hosts []Host
 }
 
-// HostFile represents host file
+// HostFile represents a host file
 type HostFile struct {
-	Name string
-	Path string
+	Name  string
+	Path  string
+	Bytes []byte `json:"-"`
 }

@@ -4,9 +4,10 @@ import (
 	"github.com/tennashi/gope/domain"
 )
 
-// Hosts is repository
+// Hosts defines the CRUD interface of the host model.
 type Hosts interface {
-	GetHostFiles(dirPath string) ([]*domain.HostFile, error)
-	GetHosts(fileName string) (*domain.Hosts, error)
-	GetHost(fileName, hostName string) (*domain.Host, error)
+	GetHostFiles(basePath string) ([]*domain.HostFile, error)
+	GetHostFile(basePath, name string) (*domain.HostFile, error)
+	GetHosts(hostFile *domain.HostFile) (*domain.Hosts, error)
+	GetHost(hostFile *domain.HostFile, name string) (*domain.Host, error)
 }

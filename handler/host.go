@@ -2,7 +2,6 @@ package handler
 
 import (
 	"net/http"
-	"path/filepath"
 
 	"github.com/labstack/echo"
 
@@ -11,44 +10,45 @@ import (
 	"github.com/tennashi/gope/usecase"
 )
 
-// Host represent host usecase
+// Host represent a host handler.
 type Host struct {
 	uc *usecase.Host
 }
 
-// NewHost is constructor
+// NewHost construct a new host handler.
 func NewHost() *Host {
-	uc := usecase.NewHost(&store.Hosts{})
+	repo := &store.Hosts{}
+	uc := usecase.NewHost(repo)
 	return &Host{uc}
 }
 
-// GetHostFiles show host files
-func (h *Host) GetHostFiles(c *context.Context) error {
-	dirPath := filepath.Join(c.Config.GetString("base_path"), "hosts")
-	ret, err := h.uc.GetHostFiles(dirPath)
+// GetHostFiles show host files.
+func (h *Host) GetHostFiles(c *context.Project) error {
+	basePath := c.Project.BasePath
+	ret, err := h.uc.GetHostFiles(basePath)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusNotFound, err.Error())
 	}
 	return c.JSON(http.StatusOK, ret)
 }
 
-// GetHosts show Hosts list
-func (h *Host) GetHosts(c *context.Context) error {
-	fileName := c.Param("name") + ".toml"
-	filePath := filepath.Join(c.Config.GetString("base_path"), "hosts", fileName)
-	ret, err := h.uc.GetHosts(filePath)
+// GetHosts show the host list.
+func (h *Host) GetHosts(c *context.Project) error {
+	name := c.Param("name")
+	basePath := c.Project.BasePath
+	ret, err := h.uc.GetHosts(basePath, name)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusNotFound, err.Error())
 	}
 	return c.JSON(http.StatusOK, ret)
 }
 
-// GetHost show host
-func (h *Host) GetHost(c *context.Context) error {
-	fileName := c.Param("name") + ".toml"
-	filePath := filepath.Join(c.Config.GetString("base_path"), "hosts", fileName)
+// GetHost show the host.
+func (h *Host) GetHost(c *context.Project) error {
+	fileName := c.Param("name")
 	hostName := c.Param("host")
-	ret, err := h.uc.GetHost(filePath, hostName)
+	basePath := c.Project.BasePath
+	ret, err := h.uc.GetHost(basePath, fileName, hostName)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusNotFound, err.Error())
 	}

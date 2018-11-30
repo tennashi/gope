@@ -1,0 +1,7 @@
+[[projects]]
+name = "example"
+base_path = "./example"
+
+[[projects]]
+name = "test"
+base_path = "./test"
