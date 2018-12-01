@@ -1,0 +1,52 @@
+version: 2.1
+
+executors:
+  default:
+    working_directory: ~/workspace
+    docker:
+      - image: circleci/golang:1.11
+          environment:
+            GO111MODULE: "on"
+
+commands:
+  restore:
+    steps:
+      - restore_cache:
+          name: Restore dependence packages
+          key: cache-{{ checksum "go.sum" }}
+  save:
+    steps:
+      - save_cache:
+          name: Cache dependence packages
+          key: cache-{{ checksum "go.sum" }}
+          paths:
+            - /go/pkg/mod/cache
+
+jobs:
+  setup:
+    executor:
+      name: default
+    steps:
+      - checkout
+      - restore
+      - run:
+          name: Install packages
+          command: go mod download
+      - save
+  test:
+    executor:
+      name: default
+    steps:
+      - checkout
+      - restore
+      - run:
+          name: Run test
+          command: go test ./...
+
+workflows:
+  setup_and_test:
+    jobs:
+      - setup
+      - test:
+          requires:
+            - setup
