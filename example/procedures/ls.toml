@@ -1,0 +1,14 @@
+[[section]]
+type = "markdown"
+value = '''
+# ls
+## check
+hogehoge
+'''
+
+[[section]]
+type = "cmd.exec"
+option = "check"
+value = '''
+ls
+'''

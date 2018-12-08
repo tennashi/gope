@@ -45,6 +45,7 @@ func (p *Procedure) GetProcedureFile(basePath, name string) (*domain.ProcedureFi
 // GetProcedure returns a procedure.
 func (p *Procedure) GetProcedure(proFile *domain.ProcedureFile) (procedure *domain.Procedure, err error) {
 	procedure = &domain.Procedure{}
+	procedure.Name = proFile.Name
 	if err = toml.Unmarshal(proFile.Bytes, procedure); err != nil {
 		return nil, err
 	}
